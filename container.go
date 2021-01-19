@@ -24,7 +24,8 @@ func (c *container) register(constructor interface{}, scope provideScope, tag st
 	prototypeName, _ := internal.GetGodiPacketName(prototype)
 	pack, ok := c.packets.Load(prototypeName)
 	if !ok {
-		c.packets.Store(prototypeName, newPacket(c, prototype))
+		pack = newPacket(c, prototype)
+		c.packets.Store(prototypeName, pack)
 	}
 	err := pack.(*packet).provide(tag, newProvider(constructor, scope, filters))
 	if err != nil {
